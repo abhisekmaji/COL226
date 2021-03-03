@@ -1,4 +1,4 @@
-datatype tokens = EOF | TERM | CONST | NOT | AND | OR | XOR | EQUALS
+datatype lexresult = EOF | TERM | CONST of bool| NOT | AND | OR | XOR | EQUALS
                 | IMPLIES | IF | THEN | ELSE | LPAREN | RPAREN | ID of string
 
 structure T = Tokens
