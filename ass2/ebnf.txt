@@ -2,18 +2,24 @@
 
 Program ::= {Statement ";"}.
 
-Statement ::= {Function}.
+Statement ::= {Formula}.
 
-Function ::= "IF" Function1
-			 "THEN" Function1
-			 "ELSE" Function
-			| Function1.
+Formula ::= "IF" Formula "THEN" Formula
+	  	| "IF" Formula "THEN" FormulaA ELSE Formula
+		| Formula2.
 
-Function1 ::= Function2 "IMPLIES" Function1 | Function2.
+FormulaA ::= "IF" Formula
+	     "THEN" FormulaA
+	     "ELSE" FormulaA
+	     | Formula1.
 
-Function2 ::= Function2 Binop Function3 | Function3.
+Formula1 ::= Formula2 "IMPLIES" Formula1 | Formula2.
 
-Function3 ::= "NOT" Function3 | "(" Function ")" | Const | Id
+Formula2 ::= Formula2 Binop Formula3 | Formula3.
+
+Formula3 ::= "NOT" Formula3 | Formula4.
+
+Formula4 ::= "(" Formula ")" | Const | Id.
 
 Binop ::= "AND" | "OR" | "XOR" | "EQUALS".
 
