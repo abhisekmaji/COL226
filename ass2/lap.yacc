@@ -10,8 +10,8 @@
       | EQUALS | TERM | IMPLIES | NOT | ID of string 
       | LPAREN | RPAREN | EOF
 
-%nonterm START | program | statement1 | statement 
-        | formula
+%nonterm START of AST.Prop | program of AST.Prop | statement1 of AST.Prop | statement of AST.Prop  
+        | formula of AST.Prop 
 
 %pos int
 %eop EOF
@@ -28,24 +28,24 @@
 
 %%
 
-START : program                                       ()
+START : program                                       (program)
 
-program : statement1                                  ()
-        | program statement1                          ()
+program : statement1                                  (statement1)
+        | program statement1                          (statement1)
 
 
-statement1 : statement TERM                           ()
+statement1 : statement TERM                           (statement1)
 
-statement : formula                                   ()
-          | statement formula                         ()
+statement : formula                                   (formula)
+          | statement formula                         (formula)
 
-formula : CONST                                       ()
-        | ID                                          ()
-        | formula AND formula                         ()
-        | formula OR formula                          ()
-        | formula XOR formula                         ()
-        | formula EQUALS formula                      ()
-        | formula IMPLIES formula                     ()
-        | NOT formula                                 ()
-        | LPAREN formula RPAREN                       ()
-        | IF formula THEN formula ELSE formula        ()
+formula : CONST                                       (AST.CONSTV(CONST))
+        | ID                                          (AST.IDV(ID))
+        | formula AND formula                         (AST.ANDV(formula1,formula2))
+        | formula OR formula                          (AST.ORV(formula1,formula2))
+        | formula XOR formula                         (AST.XORV(formula1,formula2))
+        | formula EQUALS formula                      (AST.EQUALSV(formula1,formula2))
+        | formula IMPLIES formula                     (AST.IMPLIESV(formula1,formula2))
+        | NOT formula                                 (AST.NOTV(formula))
+        | LPAREN formula RPAREN                       (formula)
+        | IF formula THEN formula ELSE formula        (AST.ITEV(formula1,formula2,formula3))

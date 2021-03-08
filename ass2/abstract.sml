@@ -1,4 +1,4 @@
-(*signature AST = sig
+signature AST = sig
     datatype Prop = LPARENV
             |   RPARENV
             |   IDV of string            
@@ -12,7 +12,7 @@
             |	IMPLIESV of Prop * Prop
             |	ITEV of Prop * Prop * Prop
     val post_trav : Prop -> string
-end *) 
+end  
   
 structure AST : AST =
 	struct

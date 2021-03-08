@@ -11,6 +11,7 @@ fun invoke lexstream =
             fun print_error (s,pos:int,_) =
             TextIO.output(TextIO.stdOut, "Error, line " ^ (Int.toString pos) ^ "," ^ s ^ "\n")
 		in
+            print("[");
 		    LapParser.parse(0,lexstream,print_error,())
 		end
 
