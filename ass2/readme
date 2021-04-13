@@ -1,0 +1,19 @@
+This contains the instructions for execution of the code.
+We have to run make in the console and it will open an
+interactive sml environment and then we have to write 
+"use \"load.sml\"" and then to execute the lexing and parsing
+we have to pass an inputfile to the parse_File function along with the
+outputfile to store the post order traversal value.
+
+Sumarizing the above in steps:
+
+Step1: $make
+
+(*-----opens sml interactive environment------*)
+
+Step2: -use "load.sml";
+Step3: -parse_File ("inputfile","outputfile")
+
+(*This will print the tokens as a list for every line in the program
+and then we can check the postorder traversal of the Abstract Tree in
+the output file we have mentioned*)

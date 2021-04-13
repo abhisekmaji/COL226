@@ -7,9 +7,9 @@ structure Tokens = Tokens
 
 val beg = ref true
 val pos = ref 1
-val col = ref 0
-val eof = fn () => (beg:= true;col:=0;print("]\n");Tokens.EOF(!pos, !pos))
-val error = fn (e, l:int, _) => TextIO.output(TextIO.stdOut,"Unknown Token:" ^ (Int.toString l) ^ ": " ^ e ^ "\n")
+val col = ref 1
+val eof = fn () => (beg:= true;col:=1;print("]\n");Tokens.EOF(!pos, !pos))
+val error = fn (e, l:int, c:int) => TextIO.output(TextIO.stdOut,"\n Unknown Token:" ^ (Int.toString l) ^ ":" ^ (Int.toString c) ^ ":" ^ e ^ "\n")
 fun inc a =(a := !a + 1;!a)
 
 %%
@@ -18,7 +18,7 @@ alpha = [A-Za-z];
 
 %%
 
-"\n"                => (col:= 0;pos := (!pos) +1; lex());
+"\n"                => (col:= 1;pos := (!pos) +1; lex());
 [\ \t]              => (col:= !col+1;lex());
 ";"                 => (col:= !col+1;
                         if !beg then (beg := false;print("TERM \""^yytext^"\""))
@@ -52,6 +52,10 @@ alpha = [A-Za-z];
                         if !beg then (beg := false;print("IMPLIES \""^yytext^"\""))
                         else print(", IMPLIES \""^yytext^"\"");
                         Tokens.IMPLIES(!pos,!pos));
+"EQUALS"            => (col:= !col+6;
+                        if !beg then (beg := false;print("EQUALS \""^yytext^"\""))
+                        else print(", EQUALS \""^yytext^"\"");
+                        Tokens.EQUALS(!pos,!pos));
 "IF"                => (col:= !col+2;
                         if !beg then (beg := false;print("IF \""^yytext^"\""))
                         else print(", IF \""^yytext^"\"");
@@ -76,4 +80,4 @@ alpha = [A-Za-z];
                         if !beg then (beg := false;print("ID \""^yytext^"\""))
                         else print(", ID \""^yytext^"\"");
                         Tokens.ID(yytext,!pos,!pos));
-.                   => (error(yytext,!pos,!pos);lex());
+.                   => (error(yytext,!pos,!col);col:= !col+(size yytext);lex());

@@ -10,8 +10,8 @@
       | EQUALS | TERM | IMPLIES | NOT | ID of string 
       | LPAREN | RPAREN | EOF
 
-%nonterm START of AST.Prop | program of AST.Prop | statement1 of AST.Prop | statement of AST.Prop  
-        | formula of AST.Prop 
+%nonterm START of AST.Node | program of AST.Node | statement1 of AST.Node | statement of AST.Node  
+        | formula of AST.Node 
 
 %pos int
 %eop EOF
@@ -37,7 +37,6 @@ program : statement1                                  (statement1)
 statement1 : statement TERM                           (statement1)
 
 statement : formula                                   (formula)
-          | statement formula                         (formula)
 
 formula : CONST                                       (AST.CONSTV(CONST))
         | ID                                          (AST.IDV(ID))
